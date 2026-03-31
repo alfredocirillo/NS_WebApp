@@ -1,1 +1,14 @@
 # NS_WebApp
+
+Docker demo on the potential NetSec consequences of letting a generative AI build you a web service
+
+---
+
+## Docker Commands
+
+To start all 3 docker machines, the network and the database:
+```
+docker-compose up --build
+```
+
+To stop: `CTRL+C` or `docker-compose down -v` to also remove the database images.

@@ -1,0 +1,63 @@
+version: '3.3'
+
+services:
+  db:
+    image: mysql:8.0
+    container_name: security-demo-db
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: webapp_db
+      MYSQL_USER: webapp_user
+      MYSQL_PASSWORD: webapp_pass
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./db-init/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - security-network
+    expose:
+      - "3306"
+
+  # Web Application
+  web:
+    build: ./web
+    container_name: security-demo-web
+    depends_on:
+      - db
+    environment:
+      MYSQL_HOST: db
+      MYSQL_USER: webapp_user
+      MYSQL_PASSWORD: webapp_pass
+      MYSQL_DB: webapp_db
+    ports:
+      - "80:80"
+    volumes:
+      - ./web:/var/www/html
+    networks:
+      - security-network
+    command: sh -c "sleep 15 && apache2-foreground"
+
+
+  # Handler PC (SSH access)
+  handler:
+    build: ./handler
+    container_name: security-demo-handler
+    ports:
+      - "2222:22"
+    networks:
+      - security-network
+
+  # Client
+  client:
+    build: ./client
+    container_name: security-demo-client
+    networks:
+      - security-network
+    stdin_open: true
+    tty: true
+
+networks:
+  security-network:
+    driver: bridge
+
+volumes:
+  db_data:
