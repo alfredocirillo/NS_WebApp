@@ -2,8 +2,8 @@ version: '3.3'
 
 services:
   db:
-    image: mysql:8.0
-    container_name: security-demo-db
+    image: mariadb:latest
+    container_name: ns-db
     environment:
       MYSQL_ROOT_PASSWORD: rootpass
       MYSQL_DATABASE: webapp_db
@@ -13,14 +13,14 @@ services:
       - db_data:/var/lib/mysql
       - ./db-init/init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
-      - security-network
+      - ns-network
     expose:
       - "3306"
 
   # Web Application
   web:
     build: ./web
-    container_name: security-demo-web
+    container_name: ns-web
     depends_on:
       - db
     environment:
@@ -33,30 +33,30 @@ services:
     volumes:
       - ./web:/var/www/html
     networks:
-      - security-network
-    command: sh -c "sleep 15 && apache2-foreground"
+      - ns-network
+    command: sh -c "sleep 10 && apache2-foreground"
 
 
-  # Handler PC (SSH access)
+  # Admin's PC (SSH access)
   handler:
     build: ./handler
-    container_name: security-demo-handler
+    container_name: ns-handler
     ports:
       - "2222:22"
     networks:
-      - security-network
+      - ns-network
 
   # Client
   client:
     build: ./client
-    container_name: security-demo-client
+    container_name: ns-client
     networks:
-      - security-network
+      - ns-network
     stdin_open: true
     tty: true
 
 networks:
-  security-network:
+  ns-network:
     driver: bridge
 
 volumes:

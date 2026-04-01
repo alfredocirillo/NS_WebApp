@@ -1,11 +1,11 @@
-FROM ubuntu:22.04
+FROM alpine:latest
 
-RUN apt-get update && apt-get install -y \
+RUN apk add --no-cache \
+    bash \
     curl \
     wget \
     apache2-utils \
-    iputils-ping \
-    net-tools \
-    && rm -rf /var/lib/apt/lists/*
+    iputils \
+    net-tools
 
 CMD ["/bin/bash"]

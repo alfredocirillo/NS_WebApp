@@ -155,13 +155,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <p><strong>Email:</strong> <?php echo htmlspecialchars($user['email']); ?></p>
                 </div>
             </div>
-
-            <div class="tabs">
-                <button class="tab-button" onclick="openTab(event, 'edit-profile')">Edit Profile</button>
-                <button class="tab-button" onclick="openTab(event, 'change-password')">Change Password</button>
-
+            <div>
                 <button class="btn-change-picture" onclick="toggleModal()">Change Picture</button>  
-                <span class="close" onclick="toggleModal()">&times;</span>  
+            </div>
+            <hr>
+            <div class="tabs">
+                <button class="tab-button" onclick="openTab(event, 'edit-profile')">Edit Personal Info</button>
+                <button class="tab-button" onclick="openTab(event, 'change-password')">Change Password</button>
             </div>
 
             <!-- Edit Profile Tab -->
@@ -208,11 +208,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <button type="submit" class="btn-submit">Update Password</button>
                 </form>
             </div>
-
-            <div class="footer-links">
-                <a href="index.php">Back to Home</a>
-                <a href="logout.php">Logout</a>
-            </div>
         </div>
     </div>
 
@@ -227,7 +222,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <input type="file" id="profile_picture" name="profile_picture" accept="image/*" required>
                     <small>Supported formats: JPG, PNG, GIF (Max 5MB)</small>
                 </div>
-                <button type="submit" class="btn-submit">Upload Picture</button>
+                <button type="submit" class="btn-submit">Change Picture</button>
             </form>
         </div>
     </div>

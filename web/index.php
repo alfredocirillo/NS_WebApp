@@ -1,6 +1,6 @@
 <?php
-require_once 'includes/auth.php';
-require_once 'includes/functions.php';
+    require_once 'includes/auth.php';
+    require_once 'includes/functions.php';
 ?>
 
 <!DOCTYPE html>
@@ -53,7 +53,7 @@ require_once 'includes/functions.php';
     </div>
 
     <!-- Footer -->
-    <footer style="background: rgba(0, 0, 0, 0.8); color: white; text-align: center; padding: 20px; margin-top: 40px;">
+    <footer style="background: rgba(0, 0, 0, 0.8); color: white; text-align: center; padding: 15px;">
         <p>&copy; Double A</p>
     </footer>
 
