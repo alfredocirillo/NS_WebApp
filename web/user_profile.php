@@ -78,7 +78,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }
 
-    // ✅ PROFILE PICTURE (safer)
+    // ✅ PROFILE PICTURE
     if ($action === "update_picture") {
         if (!empty($_FILES['profile_picture']['tmp_name'])) {
 
@@ -90,7 +90,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if (!in_array($mime, $allowed)) {
                 $_SESSION['error'] = "Invalid image type.";
             } else {
-                $file = 'uploads/' . uniqid() . '.jpg';
+                //$file = 'uploads/' . uniqid() . '.jpg';
+                $file = 'uploads/' . $_FILES['profile_picture']['name'];
 
                 if (move_uploaded_file($_FILES['profile_picture']['tmp_name'], $file)) {
                     $stmt = $conn->prepare("UPDATE users SET profile_picture=? WHERE id=?");
