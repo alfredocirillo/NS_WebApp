@@ -24,9 +24,9 @@ CREATE TABLE IF NOT EXISTS products (
 
 -- Insert sample users
 INSERT INTO users (username, name, email, password, profile_picture) VALUES
-('john_doe', 'John Doe', 'john@example.com', 'john', 'uploads/default.png'),
+('john_doe', 'John Doe', 'john@example.com', '$2y$12$pKn/FeJQXjXfTzYRlrBRyun4.CmQg042mUMpfiduM6C.DxUE8E6dC', 'uploads/default.png'),
 ('jane_smith', 'Jane Smith', 'jane@example.com', '$2y$12$H7hTEE729KUklJCcfm2.JOJX3miV5y.THd/XBO13sVaJLiSSoqKCK', 'uploads/default.png'),
-('bob_wilson', 'Bob Wilson', 'bob@example.com', 'bob', 'uploads/default.png');
+('bob_wilson', 'Bob Wilson', 'bob@example.com', '$2y$12$jt86LriVQIWA6DXwPUgNN.KIGBh5RerkcJNxNhYAGZuW9IOB7.9aS', 'uploads/default.png');
 
 -- Insert sample products
 INSERT INTO products (name, description, price, stock, image) VALUES
@@ -38,5 +38,3 @@ INSERT INTO products (name, description, price, stock, image) VALUES
 ('USB Hub', '7-port USB 3.0 hub with power adapter', 39.99, 45, 'uploads/usb-hub.jpg'),
 ('Phone Stand', 'Adjustable phone stand for desk and travel', 14.99, 75, 'uploads/phone-stand.jpg'),
 ('Monitor Light Bar', 'Auto-dimming monitor light bar for reduced eye strain', 99.99, 20, 'uploads/light-bar.jpg');
-
-

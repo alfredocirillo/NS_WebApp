@@ -32,12 +32,12 @@ services:
       - "80:80"
     volumes:
       - ./web:/var/www/html
+      - /var/www/html/uploads  # Exclude uploads from host mount
     networks:
       - ns-network
     command: sh -c "sleep 10 && apache2-foreground"
 
-
-  # Admin's PC (SSH access)
+  ## Admin's PC
   handler:
     build: ./handler
     container_name: ns-handler
@@ -46,7 +46,7 @@ services:
     networks:
       - ns-network
 
-  # Client
+  ## Random User of the webapp
   client:
     build: ./client
     container_name: ns-client

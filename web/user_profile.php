@@ -90,22 +90,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if (!in_array($mime, $allowed)) {
                 $_SESSION['error'] = "Invalid image type.";
             } else {
-                if (!is_dir('uploads')) mkdir('uploads', 0755);
-
                 $file = 'uploads/' . uniqid() . '.jpg';
 
-                move_uploaded_file($_FILES['profile_picture']['tmp_name'], $file);
+                if (move_uploaded_file($_FILES['profile_picture']['tmp_name'], $file)) {
+                    $stmt = $conn->prepare("UPDATE users SET profile_picture=? WHERE id=?");
+                    $stmt->bind_param("si", $file, $user_id);
+                    $stmt->execute();
 
-                $stmt = $conn->prepare("UPDATE users SET profile_picture=? WHERE id=?");
-                $stmt->bind_param("si", $file, $user_id);
-                $stmt->execute();
-
-                $_SESSION['message'] = "Picture updated!";
+                    $_SESSION['message'] = "Picture updated!";
+                } else {
+                    $_SESSION['error'] = "Failed to upload picture.";
+                }
             }
         }
     }
 
-    // ✅ Redirect (CRITICAL FIX)
     header("Location: user_profile.php");
     exit();
 }
