@@ -29,12 +29,12 @@
     <!-- Hero Section -->
     <div class="container">
         <div class="page-title">Welcome to WebStore Sassuolo</div>
-        <p style="color: white; text-align: center; font-size: 18px; margin-bottom: 40px;">Il miglior store di tutto il Sass</p>
+        <p style="text-align: center; font-size: 18px; margin-bottom: 40px;">Il miglior store di tutto il Sass</p>
     </div>
 
     <!-- Featured Products Section -->
     <div class="container">
-        <h2 style="color: white; font-size: 28px; margin-bottom: 30px;">Featured Products</h2>
+        <h2 style="font-size: 28px; margin-bottom: 30px;">Featured Products</h2>
         <div class="products-grid">
             <?php
             $products = get_all_products($conn);

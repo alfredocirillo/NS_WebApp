@@ -3,10 +3,10 @@
 Docker demo on the potential NetSec consequences of letting a generative AI build you a web service
 
 
-## Overview:
-- `web` contains all the webapp's files
-- `handler` is a fictional admin's machine
-- `client` is a random user making request to the webapp
+## Directory Overview:
+- `web`: contains all the webapp's files
+- `handler`: represents the machine used to remotely handle the webserver
+- `client`: represents the machine of random user making requests to the webapp
 
 
 ## Docker Commands
@@ -16,7 +16,10 @@ To start all 3 docker machines, the network and the database:
 docker-compose up --build
 ```
 
-To stop: `CTRL+C` or `docker-compose down -v` to also remove the database images.
+To stop and clear the volumes contents: 
+```
+docker-compose down -v
+```
 
 To delete all containers and the images downloaded:
 ```
