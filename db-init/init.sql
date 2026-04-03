@@ -50,8 +50,6 @@ INSERT INTO products (name, description, price, stock, image) VALUES
 ('USB Hub', '7-port USB 3.0 hub with power adapter', 39.99, 45, 'uploads/usb-hub.jpg'),
 ('Phone Stand', 'Adjustable phone stand for desk and travel', 14.99, 75, 'uploads/phone-stand.jpg'),
 ('Monitor Light Bar', 'Auto-dimming monitor light bar for reduced eye strain', 99.99, 20, 'uploads/light-bar.jpg');
-<<<<<<< HEAD
-=======
 
 -- Insert sample reviews
 INSERT INTO reviews (product_id, user_id, rating, comment, created_at) VALUES
@@ -69,4 +67,3 @@ INSERT INTO reviews (product_id, user_id, rating, comment, created_at) VALUES
 (7, 3, 5, 'Perfect for my desk setup. Adjustable and very portable. Great value!', '2026-02-20 14:45:00'),
 (8, 1, 5, 'Eye strain reduced significantly. The auto-dimming feature is brilliant!', '2026-02-15 11:20:00'),
 (8, 2, 4, 'Good product but pricey. The light quality is excellent though.', '2026-02-10 16:00:00');
->>>>>>> 198cce3 (Adds product's page)
