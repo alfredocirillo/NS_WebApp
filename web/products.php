@@ -351,9 +351,8 @@ $reviews_result = $reviews_query->get_result();
         <div class="nav-brand">ShopHub</div>
         <div>
             <a href="index.php">Home</a>
-            <a href="products.php">Products</a>
             <?php if (isset($_SESSION['user_id'])): ?>
-                <span><a href="profile.php">Profile</a></span>
+                <span><a href="user_profile.php">Profile</a></span>
                 <span><a href="logout.php">Logout</a></span>
             <?php else: ?>
                 <span><a href="login.php">Login</a></span>

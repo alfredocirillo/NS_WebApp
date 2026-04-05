@@ -18,8 +18,8 @@
         <div>
             <a href="index.php">Home</a>
             <?php if (is_logged_in()): ?>
-                <span style="color: white; margin-right: 20px;">Welcome, <a href="user_profile.php"><?php echo htmlspecialchars($_SESSION['username']); ?></a>
-                <a href="logout.php">Logout</a>
+                <span><a href="user_profile.php">Profile</a></span>
+                <span><a href="logout.php">Logout</a></span>
             <?php else: ?>
                 <a href="login.php">Login</a>
             <?php endif; ?>

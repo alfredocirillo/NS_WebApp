@@ -6,4 +6,5 @@ RUN a2enmod rewrite
 # Copy your web files
 COPY . /var/www/html/
 
+
 EXPOSE 8080
