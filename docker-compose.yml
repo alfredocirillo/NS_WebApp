@@ -37,6 +37,18 @@ services:
       - ns-network
     command: sh -c "sleep 10 && apache2-foreground"
 
+  # Attacker's site for CSRF
+  web_evil:
+    build: ./web_evil
+    container_name: ns-web_evil
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./web_evil:/var/www/html
+    networks:
+      - ns-network
+    command: sh -c "apache2-foreground"
+
   ## Admin's PC
   handler:
     build: ./handler
