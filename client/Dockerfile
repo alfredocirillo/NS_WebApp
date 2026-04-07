@@ -6,6 +6,7 @@ RUN apk add --no-cache \
     wget \
     apache2-utils \
     iputils \
-    net-tools
+    net-tools \
+    openssl
 
 CMD ["/bin/bash"]

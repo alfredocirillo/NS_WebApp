@@ -16,6 +16,7 @@ RUN adduser -D -s /bin/sh handler && \
 
 # Allow root login (optional, for demo purposes)
 RUN echo "PermitRootLogin yes" >> /etc/ssh/sshd_config && \
+    echo "PasswordAuthentication yes" >> /etc/ssh/sshd_config && \
     echo "root:rootpass" | chpasswd
 
 # Generate host keys (Alpine doesn't do this automatically)

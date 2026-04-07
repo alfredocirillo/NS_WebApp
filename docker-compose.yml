@@ -1,4 +1,4 @@
-version: '3.3'
+version: '3.8'
 
 services:
   db:
@@ -9,35 +9,86 @@ services:
       MYSQL_DATABASE: webapp_db
       MYSQL_USER: webapp_user
       MYSQL_PASSWORD: webapp_pass
+    networks:
+      - backend_net
     volumes:
       - db_data:/var/lib/mysql
       - ./db-init/init.sql:/docker-entrypoint-initdb.d/init.sql
-    networks:
-      - ns-network
     expose:
       - "3306"
 
-  # Web Application
   web:
     build: ./web
     container_name: ns-web
     depends_on:
       - db
+    cap_add:
+      - NET_ADMIN  # per poter modificare le rotte
+    networks:
+      dmz_net:
+        ipv4_address: 10.20.0.10
+      backend_net: {}
+      admin_net: {}
+    ports:  # (De-commentare solo se devi testare dal tuo browser host)
+      - "80:80"
     environment:
       MYSQL_HOST: db
       MYSQL_USER: webapp_user
       MYSQL_PASSWORD: webapp_pass
       MYSQL_DB: webapp_db
-    ports:
-      - "80:80"
+    command: >
+      sh -c "
+      sleep 10;
+      ip route add 10.10.0.0/24 via 10.20.0.254;
+      apache2-foreground"
     volumes:
       - ./web:/var/www/html
-      - /var/www/html/uploads  # Exclude uploads from host mount
-    networks:
-      ns-network:
-        ipv4_address: 172.18.0.11
-    command: sh -c "sleep 10 && apache2-foreground"
+      - /var/www/html/uploads
 
+  handler:
+    build: ./handler
+    container_name: ns-handler
+    networks:
+      - admin_net
+    # ports: #
+    #   - "2222:22"
+    restart: unless-stopped
+
+  client:
+    build: ./client
+    container_name: ns-client
+    cap_add:
+      - NET_ADMIN
+    networks:
+      client_net:
+        ipv4_address: 10.10.0.2
+    command: >
+      sh -c "
+      ip route add 10.20.0.0/24 via 10.10.0.254;
+      tail -f /dev/null
+      "
+    tty: true
+    stdin_open: true
+
+  attacker:
+    build: ./attacker
+    container_name: ns-attacker
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+    sysctls:
+      net.ipv4.ip_forward: 1
+    networks:
+      client_net:
+        ipv4_address: 10.10.0.3
+    command: >
+      sh -c "
+      ip route add 10.20.0.0/24 via 10.10.0.254;
+      tail -f /dev/null
+      "
+    tty: true
+    stdin_open: true
+    
   # Attacker's site for CSRF
   web_evil:
     build: ./web_evil
@@ -47,34 +98,42 @@ services:
     volumes:
       - ./web_evil:/var/www/html
     networks:
-      ns-network:
-        ipv4_address: 172.18.0.10
-    command: sh -c "apache2-foreground"
-
-  ## Admin's PC
-  handler:
-    build: ./handler
-    container_name: ns-handler
-    ports:
-      - "2222:22"
+      client_net:
+        ipv4_address: 10.10.0.4
+    command: >
+      sh -c "ip route add 10.20.0.0/24 via 10.10.0.254;
+      tail -f /dev/null;
+      apache2-foreground"
+    
+  router:
+    build: ./router
+    container_name: ns-router
+    cap_add:
+      - NET_ADMIN
+    sysctls:
+      net.ipv4.ip_forward: 1
     networks:
-      - ns-network
-
-  ## Random User of the webapp
-  client:
-    build: ./client
-    container_name: ns-client
-    networks:
-      - ns-network
-    stdin_open: true
-    tty: true
+      client_net:
+        ipv4_address: 10.10.0.254
+      dmz_net:
+        ipv4_address: 10.20.0.254
+    restart: unless-stopped
 
 networks:
-  ns-network:
+  client_net:
     driver: bridge
     ipam:
       config:
-        - subnet: 172.18.0.0/28
+        - subnet: 10.10.0.0/24
+  dmz_net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.20.0.0/24
+  backend_net:
+    driver: bridge
+  admin_net:
+    driver: bridge
 
 volumes:
   db_data:

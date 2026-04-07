@@ -4,11 +4,9 @@ Docker demo on the potential NetSec consequences of letting a generative AI buil
 
 
 ## Directory Overview:
-- `web 172.18.0.11`: contains all the webapp's files
+- `web`: contains all the webapp's files
 - `handler`: represents the machine used to remotely handle the webserver
 - `client`: represents the machine of random user making requests to the webapp
-- `web_evil 172.18.0.10`: website used by the attacker to exploit CSRF
-
 
 
 ## Docker Commands
