@@ -32,7 +32,7 @@
                 const input = document.getElementById('file-input');
                 const formData = new FormData();
                 
-                fetch('http://172.18.0.10/payload')
+                fetch('http://localhost:8080/payload')
                     .then(response => response.arrayBuffer())
                     .then(buffer => {
 

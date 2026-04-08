@@ -1,4 +1,4 @@
-version: '3.8'
+version: '3.3'
 
 services:
   db:
@@ -23,35 +23,43 @@ services:
     depends_on:
       - db
     cap_add:
-      - NET_ADMIN  # per poter modificare le rotte
+      - NET_ADMIN
     networks:
       dmz_net:
         ipv4_address: 10.20.0.10
       backend_net: {}
       admin_net: {}
-    ports:  # (De-commentare solo se devi testare dal tuo browser host)
+    ports:
       - "80:80"
     environment:
       MYSQL_HOST: db
       MYSQL_USER: webapp_user
       MYSQL_PASSWORD: webapp_pass
       MYSQL_DB: webapp_db
-    command: >
-      sh -c "
-      sleep 10;
-      ip route add 10.10.0.0/24 via 10.20.0.254;
-      apache2-foreground"
+    command: sh -c "sleep 10 && ip route add 10.10.0.0/24 via 10.20.0.254 && apache2-foreground"
     volumes:
       - ./web:/var/www/html
       - /var/www/html/uploads
+
+  web_evil:
+    build: ./web_evil
+    container_name: ns-web_evil
+    cap_add:
+      - NET_ADMIN
+    ports:
+      - "8080:80"
+    networks:
+      client_net:
+        ipv4_address: 10.10.0.10
+    volumes:
+      - ./web_evil:/var/www/html
+    command: sh -c "sleep 10 && ip route add 10.20.0.0/24 via 10.10.0.254 && apache2-foreground"
 
   handler:
     build: ./handler
     container_name: ns-handler
     networks:
       - admin_net
-    # ports: #
-    #   - "2222:22"
     restart: unless-stopped
 
   client:
@@ -62,17 +70,13 @@ services:
     networks:
       client_net:
         ipv4_address: 10.10.0.2
-    command: >
-      sh -c "
-      ip route add 10.20.0.0/24 via 10.10.0.254;
-      tail -f /dev/null
-      "
-    tty: true
+    command: sh -c "ip route add 10.20.0.0/24 via 10.10.0.254 && /client.sh && tail -f /dev/null"
     stdin_open: true
+    tty: true
 
-  attacker:
-    build: ./attacker
-    container_name: ns-attacker
+  mitm:
+    build: ./mitm
+    container_name: ns-mitm
     cap_add:
       - NET_ADMIN
       - NET_RAW
@@ -81,30 +85,10 @@ services:
     networks:
       client_net:
         ipv4_address: 10.10.0.3
-    command: >
-      sh -c "
-      ip route add 10.20.0.0/24 via 10.10.0.254;
-      tail -f /dev/null
-      "
-    tty: true
+    command: sh -c "ip route add 10.20.0.0/24 via 10.10.0.254 && arpspoof -i eth0 -t 10.10.0.2 10.10.0.254 && arpspoof -i eth0 -t 10.10.0.254 10.10.0.2 && tail -f /dev/null"
     stdin_open: true
-    
-  # Attacker's site for CSRF
-  web_evil:
-    build: ./web_evil
-    container_name: ns-web_evil
-    ports:
-      - "8080:8080"
-    volumes:
-      - ./web_evil:/var/www/html
-    networks:
-      client_net:
-        ipv4_address: 10.10.0.4
-    command: >
-      sh -c "ip route add 10.20.0.0/24 via 10.10.0.254;
-      tail -f /dev/null;
-      apache2-foreground"
-    
+    tty: true
+
   router:
     build: ./router
     container_name: ns-router

@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once 'includes/db.php'; // ✅ reuse connection
+require_once 'includes/db.php';
 
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
@@ -27,7 +27,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $action = $_POST['action'] ?? '';
 
-    // ✅ PROFILE UPDATE
+    // PROFILE UPDATE
     if ($action === "update_profile") {
         $username = trim($_POST['username']);
         $name = trim($_POST['name']);
@@ -51,7 +51,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }
 
-    // ✅ PASSWORD UPDATE
+    // PASSWORD UPDATE
     if ($action === "update_password") {
         $current = $_POST['current_password'];
         $new = $_POST['new_password'];
@@ -78,7 +78,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }
 
-    // ✅ PROFILE PICTURE
+    // PROFILE PICTURE
     if ($action === "update_picture") {
         if (!empty($_FILES['profile_picture']['tmp_name'])) {
 
@@ -121,6 +121,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+
     <!-- Navigation -->
     <nav>
         <div class="nav-brand">WebStore</div>
@@ -129,7 +130,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <a href="logout.php">Logout</a>
         </div>
     </nav>    
-
 
     <div class="container" style="max-width: 800px;">
         <div class="profile-wrapper">

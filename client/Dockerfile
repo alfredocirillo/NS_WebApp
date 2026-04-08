@@ -9,4 +9,7 @@ RUN apk add --no-cache \
     net-tools \
     openssl
 
-CMD ["/bin/bash"]
+COPY client.sh /client.sh
+RUN chmod +x /client.sh
+
+CMD ["bin/bash"]
