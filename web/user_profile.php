@@ -1,6 +1,8 @@
 <?php
-session_start();
 require_once 'includes/db.php';
+require_once 'includes/auth.php';
+
+$token = csrf_token();
 
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
@@ -24,6 +26,14 @@ $user = getUser($conn, $user_id);
 
 // Handle POST
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+    # Checks that the token is valid of returns error
+    $token = $_POST['csrf_token'] ?? '';
+    if (!check_csrf_token($token)) {
+        http_response_code(403);
+        echo "Invalid CSRF token";
+        exit();
+    }
 
     $action = $_POST['action'] ?? '';
 
@@ -168,6 +178,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <div id="edit-profile" class="tab-content active">
                 <form method="POST" action="">
                     <input type="hidden" name="action" value="update_profile">
+
+                    <!-- Add CSRF token-->
+                    <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($token, ENT_QUOTES, 'UTF-8'); ?>">
                     
                     <div class="form-group">
                         <label for="username">Username:</label>
@@ -189,7 +202,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <div id="change-password" class="tab-content">
                 <form method="POST" action="">
                     <input type="hidden" name="action" value="update_password">
-                    
+
+                    <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($token, ENT_QUOTES, 'UTF-8'); ?>">
                     <div class="form-group">
                         <label for="current_password">Current Password:</label>
                         <input type="password" id="current_password" name="current_password" required>
@@ -218,6 +232,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <h2>Upload Profile Picture</h2>
             <form method="POST" action="" enctype="multipart/form-data">
                 <input type="hidden" name="action" value="update_picture">
+                <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($token, ENT_QUOTES, 'UTF-8'); ?>">
                 <div class="form-group">
                     <input type="file" id="profile_picture" name="profile_picture" accept="image/*" required>
                     <small>Supported formats: JPG, PNG, GIF (Max 5MB)</small>

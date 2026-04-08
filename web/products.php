@@ -4,6 +4,8 @@ require_once 'includes/auth.php';
 
 $error = '';
 
+$token = csrf_token();
+
 // Get product ID from URL parameter
 $product_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
@@ -29,6 +31,15 @@ $product = $product_result->fetch_assoc();
 // Handle review submission
 $review_message = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_review'])) {
+
+    # Checks that the token is valid of returns error
+    $token = $_POST['csrf_token'] ?? '';
+    if (!check_csrf_token($token)) {
+        http_response_code(403);
+        echo "Invalid CSRF token";
+        exit();
+    }
+
     if (!isset($_SESSION['user_id'])) {
         $review_message = '<div class="error">You must be logged in to submit a review.</div>';
     } else {
@@ -60,6 +71,7 @@ $reviews_query->execute();
 $reviews_result = $reviews_query->get_result();
 
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -431,6 +443,7 @@ $reviews_result = $reviews_query->get_result();
                                 </select>
                             </div>
                             <div class="form-group">
+                                <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($token, ENT_QUOTES, 'UTF-8'); ?>">
                                 <label for="comment">Your Review:</label>
                                 <textarea id="comment" name="comment" placeholder="Share your thoughts about this product..." required></textarea>
                             </div>
