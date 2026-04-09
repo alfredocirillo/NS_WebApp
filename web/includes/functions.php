@@ -15,4 +15,5 @@ function get_product_by_id($conn, $id) {
     $result = $stmt->get_result();
     return $result->fetch_assoc();
 }
+
 ?>

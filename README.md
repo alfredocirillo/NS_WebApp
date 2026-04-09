@@ -2,12 +2,15 @@
 
 Docker demo on the potential NetSec consequences of letting a generative AI build you a web service
 
+This `secured` branch has some security measures already implemented, mainly regarding:
+- file uploading
+- csrf tokens
 
 ## Directory Overview:
-- `web`: contains all the webapp's files
+- `web @ 10.20.0.10`: contains all the webapp's files
 - `handler`: represents the machine used to remotely handle the webserver
 - `client`: represents the machine of random user making requests to the webapp
-- `web_evil`: attacker's site to exploit CSRF on "web"
+- `web_evil @ 10.10.0.10`: attacker's site to exploit CSRF on "web"
 - `mitm`: for the attaccker to spoof the connection between "client" and "web" and sniff their communication
 
 

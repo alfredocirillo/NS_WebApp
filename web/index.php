@@ -28,8 +28,8 @@
 
     <!-- Hero Section -->
     <div class="container">
-        <div class="page-title">Welcome to WebStore Sassuolo</div>
-        <p style="text-align: center; font-size: 18px; margin-bottom: 40px;">Il miglior store di tutto il Sass</p>
+        <div class="page-title">Welcome to the WebStore</div>
+        <p style="text-align: center; font-size: 18px; margin-bottom: 40px;">By yours truly, DoubleA</p>
     </div>
 
     <!-- Featured Products Section -->

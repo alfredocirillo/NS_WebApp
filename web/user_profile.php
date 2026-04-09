@@ -100,8 +100,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if (!in_array($mime, $allowed)) {
                 $_SESSION['error'] = "Invalid image type.";
             } else {
-                //$file = 'uploads/' . uniqid() . '.jpg';
-                $file = 'uploads/' . $_FILES['profile_picture']['name'];
+
+                # Remove executable extensions
+                $file = 'uploads/' . uniqid() . '.jpg';
 
                 if (move_uploaded_file($_FILES['profile_picture']['tmp_name'], $file)) {
                     $stmt = $conn->prepare("UPDATE users SET profile_picture=? WHERE id=?");

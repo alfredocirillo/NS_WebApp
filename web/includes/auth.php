@@ -24,7 +24,6 @@ function logout_user() {
     exit();
 }
 
-
 # Return current token or create one if there's none
 function csrf_token() {
     if (empty($_SESSION['csrf_token'])) {
@@ -33,7 +32,7 @@ function csrf_token() {
     return $_SESSION['csrf_token'];
 }
 
-// Check if the token is valid by comparing hashes
+// Check if the token is valid by comparing their hashes
 function check_csrf_token($token) {
     if (empty($_SESSION['csrf_token']) || empty($token)) {
         return false;

@@ -8,14 +8,6 @@ $token = csrf_token();
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-    # Checks that the token is valid of returns error
-    $token = $_POST['csrf_token'] ?? '';
-    if (!check_csrf_token($token)) {
-        http_response_code(403);
-        echo "Invalid CSRF token";
-        exit();
-    }
-
     $username = trim($_POST['username'] ?? '');
     $password = $_POST['password'] ?? '';
 
@@ -65,7 +57,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <form method="POST" action="">
             <div class="form-group">
                 <label for="username">Username</label>
-                <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($token, ENT_QUOTES, 'UTF-8'); ?>">
                 <input 
                     type="text" 
                     id="username" 
@@ -78,7 +69,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             
             <div class="form-group">
                 <label for="password">Password</label>
-                <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($token, ENT_QUOTES, 'UTF-8'); ?>">
                 <input 
                     type="password" 
                     id="password" 
