@@ -4,17 +4,17 @@
 while true; do
     sleep 15;
 
-    curl http://10.20.0.10:80/index.php
+    curl -k https://10.20.0.10:443/index.php
 
     sleep 5;
 
-    curl http://10.20.0.10:80/login.php
+    curl -k https://10.20.0.10:443/login.php
 
     sleep 5;
 
-    curl -d "username=jane_smitt&password=jane" http://10.20.0.10:80/login.php
+    curl -k -d "username=jane_smitt&password=jane" https://10.20.0.10:443/login.php
 
     sleep 5;
 
-    curl -d "username=jane_smith&password=jane" http://10.20.0.10:80/login.php
+    curl -k -d "username=jane_smith&password=jane" https://10.20.0.10:443/login.php
 done

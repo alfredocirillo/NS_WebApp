@@ -24,6 +24,9 @@ iptables -A FORWARD -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
 # 2. Permetti HTTP (TCP 80) dai Client al Webserver (senza vincoli di interfaccia)
 iptables -A FORWARD -p tcp --dport 80 -s 10.10.0.0/24 -d 10.20.0.10 -j ACCEPT
 
+# 2b. Permetti HTTPS (TCP 443) dai Client al Webserver
+iptables -A FORWARD -p tcp --dport 443 -s 10.10.0.0/24 -d 10.20.0.10 -j ACCEPT
+
 # 3. Permetti ICMP (Ping) in entrata verso il Webserver
 iptables -A FORWARD -p icmp -s 10.10.0.0/24 -d 10.20.0.10 -j ACCEPT
 

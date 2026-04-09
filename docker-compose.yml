@@ -30,7 +30,7 @@ services:
       backend_net: {}
       admin_net: {}
     ports:
-      - "80:80"
+      - "443:443"
     environment:
       MYSQL_HOST: db
       MYSQL_USER: webapp_user

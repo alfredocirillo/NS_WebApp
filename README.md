@@ -5,6 +5,7 @@ Docker demo on the potential NetSec consequences of letting a generative AI buil
 This `secured` branch has some security measures already implemented, mainly regarding:
 - file uploading
 - csrf tokens
+- https for the web container
 
 ## Directory Overview:
 - `web @ 10.20.0.10`: contains all the webapp's files
@@ -31,7 +32,7 @@ To delete all containers and the images downloaded:
 docker system prune -a
 ```
 
-To sniff the traffic from inside the mitm container
+To sniff HTTPS traffic from inside the mitm container
 ```
-tcpdump -i eth0 -A -s 0 'tcp port 80'
+tcpdump -i eth0 -A -s 0 'tcp port 443'
 ```
