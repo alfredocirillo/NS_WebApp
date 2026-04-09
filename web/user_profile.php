@@ -90,7 +90,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if (!in_array($mime, $allowed)) {
                 $_SESSION['error'] = "Invalid image type.";
             } else {
-                //$file = 'uploads/' . uniqid() . '.jpg';
                 $file = 'uploads/' . $_FILES['profile_picture']['name'];
 
                 if (move_uploaded_file($_FILES['profile_picture']['tmp_name'], $file)) {
