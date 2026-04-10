@@ -1,9 +1,6 @@
 #!/bin/sh
 
-# Il forwarding è già abilitato dal docker-compose (sysctls), 
-# ma se vuoi esserne sicuro, le policy IPTables faranno il resto.
-
-# Resetta le regole (buona pratica)
+# Resetta le regole
 iptables -F
 iptables -t nat -F
 
